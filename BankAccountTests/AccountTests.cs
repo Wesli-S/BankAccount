@@ -11,13 +11,25 @@ namespace BankAccount.Tests
     [TestClass()]
     public class AccountTests
     {
+        private Account acc;
+        [TestInitialize]
+        public void CreateDefaultAccount()
+        {
+            acc = new Account("J Doe");
+        }
+
+
         [TestMethod]
-        public void Deposit_APositiveAmount_AddToBalance()
+        [DataRow(100)]
+        [DataRow(.01)]
+        [DataRow(1.99)]
+        [DataRow(9_999.99)]
+        public void Deposit_APositiveAmount_AddToBalance(double depositAmount)
         {
             Account acc = new Account("J Doe");
-            acc.Deposit(100);
+            acc.Deposit(depositAmount);
 
-            Assert.AreEqual(100, acc.Balance);
+            Assert.AreEqual(depositAmount, acc.Balance);
         }
 
         [TestMethod]
@@ -36,5 +48,42 @@ namespace BankAccount.Tests
             Assert.AreEqual(expectedReturn, returnValue);
         }
 
+
+        [TestMethod]
+        [DataRow(-1)]
+        [DataRow(0)]
+        public void Deposit_ZeroOrLess_ThrowsArgumentException(double invalidDepositAmount)
+        {
+            //Arrange
+            Account acc = new Account("J Doe");
+
+            //Assert => Act
+            Assert.ThrowsException<ArgumentOutOfRangeException>
+                (() => acc.Deposit(invalidDepositAmount));
+        }
+
+        //Withdrawing a positive amount
+        //Withdrawing 0 - Throws ArgumentOutOfRange exception
+        //Withdrawing negative amount- Throws ArgumentOutOfRange exception
+        //withdrawing more than available balance - ArgumentException
+
+        [TestMethod]
+        public void Withdraw_PositiveAmount_DecreasesBalance()
+        {
+            //Arrage
+            double initialDeposit = 100;
+            double withdrawalAmount = 50;
+            double expectedBalance = initialDeposit - withdrawalAmount;
+
+            //Act
+            acc.Deposit(initialDeposit);
+            acc.Withdraw(withdrawalAmount);
+
+            double actualBalance = acc.Balance;
+
+            //Assert
+            Assert.AreEqual(expectedBalance, actualBalance);
+        }
     }
+
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -36,17 +37,24 @@ namespace BankAccount
         /// <returns>The new balance after the deposit</returns>
         public double Deposit(double amt)
         {
+            if(amt <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(amt)}Please enter an amount greater than 0");
+            }
             Balance += amt;
             return Balance;
+
         }
         /// <summary>
         /// Take a specific amount of money from the account
         /// </summary>
         /// <param name="amt">Positive amount to withdraw</param>
-        public void Withdraw(double amt)
+        public double Withdraw(double amt)
         {
-            throw new NotImplementedException();
+            Balance -= amt;
+            return Balance;
         }
+
 
     }
 }
