@@ -11,10 +11,30 @@ namespace BankAccount.Tests
     [TestClass()]
     public class AccountTests
     {
-        [TestMethod()]
+        [TestMethod]
         public void Deposit_APositiveAmount_AddToBalance()
         {
-            Assert.Fail();
+            Account acc = new Account("J Doe");
+            acc.Deposit(100);
+
+            Assert.AreEqual(100, acc.Balance);
         }
+
+        [TestMethod]
+        public void Deposit_APositiveAmount_ReturnsUpdatedBalance()
+        {//AAA - Arrange, Act, Assert
+
+            //Arrange
+            Account acc = new Account("J Doe");
+            double depositAmount = 100;
+            double expectedReturn = 100;
+
+            //Act
+            double returnValue = acc.Deposit(depositAmount);
+
+            //Assert
+            Assert.AreEqual(expectedReturn, returnValue);
+        }
+
     }
 }
