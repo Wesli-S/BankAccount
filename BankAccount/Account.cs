@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -51,6 +51,14 @@ namespace BankAccount
         /// <param name="amt">Positive amount to withdraw</param>
         public double Withdraw(double amt)
         {
+            if(amt > Balance) 
+            {
+                throw new ArgumentException($"{nameof(amt)} cannot be greater than {nameof(Balance)}");
+            }
+            if(amt <= 0)
+            {
+                throw new ArgumentOutOfRangeException($"{nameof(amt)} must be greater than 0");
+            }
             Balance -= amt;
             return Balance;
         }
