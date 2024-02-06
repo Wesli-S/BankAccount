@@ -116,6 +116,37 @@ namespace BankAccount.Tests
             Assert.ThrowsException<ArgumentException>(() => acc.Withdraw(withdrawAmount));
 
         }
+
+        [TestMethod]
+        public void Owner_SetAsNull_ThrowsArgumentNullException()
+        {
+            Assert.ThrowsException<ArgumentNullException>(() => acc.Owner = null);
+        }
+
+        [TestMethod]
+        public void Owner_SetAsWhiteSpaceOrEmptyString_ThrowsArgumentException()
+        {
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = String.Empty);
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = "   ");
+        }
+
+        [TestMethod]
+        [DataRow("Jamie")]
+        [DataRow("Jamie Honey")]
+        public void Owner_SetAsUpTo20Characters_SetSuccessfully(string ownerName)
+        {
+            acc.Owner = ownerName;
+            Assert.AreEqual(ownerName, acc.Owner);
+        }
+
+        [TestMethod]
+        [DataRow("F@rtz")]
+        [DataRow("Jamison Alexander Honey")]
+        [DataRow(":3")]
+        public void Owner_InvalidOwnerName_ThrowsArgumentException(string ownerName)
+        {
+            Assert.ThrowsException<ArgumentException>(() => acc.Owner = ownerName);
+        }
     }
 
 }

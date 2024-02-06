@@ -1,5 +1,4 @@
-﻿//using Microsoft.VisualStudio.TestTools.UnitTesting;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -12,6 +11,8 @@ namespace BankAccount
     /// </summary>
     public class Account
     {
+        private string owner;
+
         /// <summary>
         /// Creates an account with a specific owner and a balance of 0
         /// </summary>
@@ -23,7 +24,66 @@ namespace BankAccount
         /// <summary>
         /// Full name od the owner of the account 
         /// </summary>
-        public string Owner { get; set; }
+        public string Owner 
+        { 
+            get { return owner; }
+            set 
+            {
+                if (value == null) 
+                {
+                    throw new ArgumentNullException($"{nameof(Owner)} cannot be null");
+                }
+
+                if(value.Trim() == string.Empty)
+                {
+                    throw new ArgumentException($"{nameof(Owner)} must have some text");
+                }
+
+                if (isOwnerNameValid(value)) 
+                { 
+                    owner = value;
+                }
+                else
+                {
+                    throw new ArgumentException($"{nameof(Owner)} can be up to 20 characters, A-Z only");
+                }
+                //check that Owner is only characters
+
+                //If value contains any numbers or special characters  - throws ArgumentException
+
+                owner = value;
+            }
+        }
+
+        /// <summary>
+        /// Checks if owner name is <= to 20 characters, A-Z and whitespace characters are allowed
+        /// </summary>
+        /// <returns></returns>
+        /// <exception cref="NotImplementedException"></exception>
+        private bool isOwnerNameValid(string ownerName)
+        {
+            char[] validCharacters = { 'a', 'b', 'c', 'd', 'e', 'f', 'g', 'h', 
+                'i', 'j', 'k', 'l', 'm', 'n', 'o', 'p', 'q', 'r', 's', 't', 'u', 
+                'v', 'w', 'x', 'y', 'z' };
+
+            ownerName = ownerName.ToLower();
+
+            const int MaxLengthOwnerName = 20;
+
+            if (ownerName.Length > MaxLengthOwnerName)
+            {
+                return false;
+            }
+
+            foreach (char letter in ownerName)
+            {
+                if(letter != ' ' && !validCharacters.Contains(letter))
+                {
+                    return false;
+                }
+            }
+            return true;
+        }
 
         /// <summary>
         /// How much money is currently in the account
